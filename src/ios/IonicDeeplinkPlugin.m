@@ -14,17 +14,9 @@
 
 - (void)handleOpenURL:(NSNotification*)notification {
     NSLog(@"IonicDeeplinkPlugin: notification is %@", notification);
-    BOOL handled = [self handleLink:url];
+    NSURL* url = [notification object];
 
-    if(!handled) {
-      // Pass event through to Cordova
-      [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
-
-      // Send notice to the rest of our plugin that we didn't handle this URL
-      [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"IonicLinksUnhandledURL" object:[url absoluteString]]];
-    }
-
-    return YES;
+    [self handleLink:url];
 }
 
 - (void)onAppTerminate {
